@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Protin Form</title>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+  <style type="text/css">
+    body {
+        background: #123633;
+    }
+
+    .customsaperator {
+        padding: 20px 10px;
+        margin: 10px 0;
+        border-bottom: 1px solid #ccc;
+    }
+    .customsaperator.error input{
+        border:1px solid #f00;
+    }
+    .customsaperator .reqfield {
+        display: none;
+    }
+    .customsaperator.error .reqfield {
+        display: inline-block;
+    }
+    .customsaperator.error input:after{
+        content: "Please fill field";
+        display: block;
+        color: #f00;
+        font-size: 10px;
+    }
+    .w-small {
+        width: 100px;
+        display: inline-block;
+    }
+
+    #exerciseLevel .btn-secondary,
+    #primaryGoal .btn-secondary,
+    #CurrStatus .btn-secondary {
+        background-color: #f3f5f7;
+    }
+
+    #protin-calculate-form {
+        overflow: hidden;
+    }
+
+    #protin-calculate-form label {
+        color: #222;
+    }
+
+    .form-horizontal {
+        border: 3px solid #fff;
+        padding: 10px;
+        border-radius: 4px;
+        background: #fff;
+    }
+
+    .genderholder .btn {
+        color: #999;
+        background-color: #fff;
+        margin: 0 40px 0 40px;
+        border-bottom: 5px solid #ccc;
+        min-width: 150px;
+        text-align: left;
+    }
+
+    .genderholder .btn span {
+        position: absolute;
+        top: 45px;
+    }
+
+    .genderholder {
+        display: block;
+    }
+
+    .genderholder .btn:before {
+        content: "";
+        background: url(images/male-female.jpg) no-repeat;
+        overflow: visible;
+        height: 75px;
+        width: 65px;
+        background-size: calc(180%);
+        display: inline-block;
+    }
+
+    .genderholder .btn-dark {
+        border-color: #9cceff;
+        color: #444;
+    }
+
+    .genderholder .btn:focus {
+        box-shadow: none;
+    }
+
+    .genderholder .btn.check-male:before {
+        background-position: -55px 5px;
+    }
+
+    .genderholder .btn.check-male {}
+
+    .genderholder .btn.check-female {}
+
+    .exerciseleveldisplay label {
+        position: relative;
+    }
+
+    .exerciseleveldisplay label.active:before,
+    .primarygoaldisplay label.active:before {
+        font-family: FontAwesome;
+        content: "\f00c";
+        position: absolute;
+        left: 30px;
+        color: #009e9e;
+        text-shadow: 0 0 3px #fff;
+    }
+
+    .exerciseleveldisplay {
+        border-right: 1px solid #ccc;
+    }
+
+    .exerciseleveldisplay,
+    .primarygoaldisplay {
+        display: block;
+        margin: 5px 0;
+    }
+
+    .exerciseleveldisplay .btn,
+    .primarygoaldisplay .btn {
+        display: block;
+        margin-bottom: 5px;
+        border-radius: 20px !important;
+        max-width: 90%;
+    }
+
+    .btn-secondary:not(:disabled):not(.disabled).active,
+    .show>.btn-secondary.dropdown-toggle,
+    #exerciseLevel .btn-secondary:not(:disabled):not(.disabled).active,
+    #exerciseLevel .show>.btn-secondary.dropdown-toggle,
+    #primaryGoal .btn-secondary:not(:disabled):not(.disabled).active,
+    #primaryGoal .show>.btn-secondary.dropdown-toggle,
+    #CurrStatus .btn-secondary:not(:disabled):not(.disabled).active,
+    #CurrStatus .show>.btn-secondary.dropdown-toggle,
+    #exerciseLevel .btn-secondary:hover,
+    #primaryGoal .btn-secondary:hover,
+    #CurrStatus .btn-secondary:hover {
+        background-color: #9cceff;
+        border-color: #003058;
+        border-width: 1px;
+        font-weight: bold;
+    }
+
+    #result {
+        background: #fff;
+        border-radius: 5px;
+        padding: 20px 0;
+    }
+
+    #result span {
+        color: #222;
+        font-size: 20px;
+        display: block;
+    }
+
+    #result .mainname {
+        font-weight: bold;
+        text-transform: uppercase;
+    }
+
+    #result .calcvalues {
+        font-size: 60px;
+        font-weight: bold;
+        border-radius: 4px;
+        margin: 0 10px;
+        background: rgba(0,0,0,0.2);
+    }
+
+    #result span.quantitycalc {
+        font-size: 20px;
+    }
+
+    #protein-value,
+    #fat-value,
+    #carbs-value,
+    #carbs-value-loss {
+        width: 24%;
+        display: inline-block;
+        vertical-align: top;
+        margin-bottom: 25px;
+        text-align: center;
+    }
+
+    .resultval:before {
+        content: "";
+        background: url(images/sprite-protin.png) no-repeat;
+        width: 120px;
+        height: 110px;
+        display: inline-block;
+        margin: 0 auto;
+    }
+    .resultval:hover:before {
+        content: "";
+        background: url(images/sprite-protin-color.png) no-repeat;
+        width: 120px;
+        height: 110px;
+        display: inline-block;
+        margin: 0 auto;
+    }
+
+    #protein-value.resultval:before {
+        background-position: -475px 0px;
+    }
+
+    #carbs-value.resultval:before {
+        background-position: -590px 0px;
+    }
+    #carbs-value-loss.resultval:before {
+        background-position: -590px 0px;
+    }
+
+    #calories-value.resultval:before {
+        background-position: -230px 0px;
+    }
+
+    #waightValue.btn-group {
+        border-radius: 6px;
+    }
+
+    #waightValue.btn-group label.btn {
+        min-width: 80px;
+        font-size: 14px;
+    }
+
+    #waightValue.btn-group label.btn {
+        background-color: #f3f5f7;
+    }
+
+    #waightValue.btn-group label.btn.active {
+        background-color: #9cceff;
+    }
+
+    .customsaperator label {
+        font-size: 25px;
+    }
+
+    .customsaperator .bdrrt {
+        border-right: 1px dashed #ccc;
+    }
+
+    .ml-40 {
+        margin-left: 40px;
+    }
+
+    .spllabel {
+        font-size: 25px;
+    }
+
+    #submitButton {width: 300px;
+        padding: 10px 20px;
+        font-size: 25px;
+        background: #009e9e;
+        margin: 20px 0;}
+        #protein-value.resultval .calcvalues {color: #086ae4;}
+        #fat-value.resultval .calcvalues {color: #08b1e4;}
+        #carbs-value.resultval .calcvalues {color: #458c2d;}
+        #carbs-value-loss.resultval .calcvalues {color: #f5331f;}
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row mt-3">
+
+            <form class="form-horizontal col-md-12" id="protin-calculate-form">
+
+                <!-- Multiple Radios -->
+                <div class="form-group row">
+                    <div class="col-md-12 mb-2">
+                        <div class="row no-gutters customsaperator">
+                            <div class="col-md-3 bdrrt">
+                                <label>I am</label>
+                            </div>
+                            <div class="col-md-9">
+                                <label class="d-none">
+                                    <input type="radio" name="gender" id="male" value="male" checked="checked"> Male</label>
+                                    <label class="d-none">
+                                        <input type="radio" name="gender" id="female" value="female"> Female</label>
+                                        <span class="genderholder">
+                                          <button type="button" class="btn check-male btn-dark"><span>Male</span></button>
+                                          <button type="button" class="btn check-female"><span>Female</span></button>
+                                      </span>
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="col-md-12 mb-2">
+                            <div class="row no-gutters customsaperator">
+                                <div class="col-md-3 bdrrt">
+                                    <label>Weight</label>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="btn-group btn-group-toggle ml-40" data-toggle="buttons" id="waightValue">
+                                        <label class="btn btn-secondary active">
+                                            <input type="radio" name="unitsValue" id="lbs" value="lbs" autocomplete="off" checked> LB
+                                        </label>
+                                        <label class="btn btn-secondary">
+                                            <input type="radio" name="unitsValue" id="kg" value="kg" autocomplete="off"> KG
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <input type="number" placeholder="lbs" maxlength="3" id="weight-in-lbs" class="form-control w-small ml-40">
+                                    <input type="number" placeholder="kg" maxlength="3" id="weight-in-kg" class="form-control w-small ml-40">
+                                    <span class="reqfield text-danger">Required Field</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 mb-2">
+                            <div class="row no-gutters customsaperator">
+                                <div class="col-md-3 bdrrt">
+                                    <label>My Body Fat is (%)</label>
+                                </div>
+                                <div class="col-md-9">
+                                    <input type="number" id="fatValue" placeholder="Body Fat in (%)" class="form-control w-25 d-inline-block ml-40" />
+                                    <span class="reqfield text-danger">Required Field</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <label class="spllabel mb-3">I am currently a</label>
+                            <div class="btn-group btn-group-toggle exerciseleveldisplay" data-toggle="buttons" id="exerciseLevel">
+                                <label class="btn btn-secondary active">
+                                    <input type="radio" name="activity" id="Sedentary" autocomplete="off" value="1" checked> Non Weight Trainer <small>(Yoga, Pilates, Hiking)</small>
+                                </label>
+                                <label class="btn btn-secondary">
+                                    <input type="radio" name="activity" id="Moderate" autocomplete="off" value="1.2"> Weight Trainer <small>(Strength, Hypertrophy)</small>
+                                </label>
+                                <label class="btn btn-secondary">
+                                    <input type="radio" name="activity" id="Active" autocomplete="off" value="1.4"> Endurance Athlete <small>(Cyclists, Runners, Triathletes, Mountaineers)</small>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-2">
+                           <div class="row">
+                                 <div class="col-md-6">
+                               <label class="spllabel mb-3">Health Status</label>
+                               <div class="btn-group btn-group-toggle primarygoaldisplay" data-toggle="buttons" id="CurrStatus">
+                                <label class="btn btn-secondary active">
+                                    <input type="radio" name="currentstatus" id="Healthy" autocomplete="off" value="0.6" checked> Healthy
+                                </label>
+                                <label class="btn btn-secondary">
+                                    <input type="radio" name="currentstatus" id="Prediabetic" autocomplete="off" value="0.6"> Prediabetic
+                                </label>
+                                <label class="btn btn-secondary">
+                                    <input type="radio" name="currentstatus" id="Diabetic" autocomplete="off" value="0.8"> Diabetic
+                                </label>
+                            </div>
+                        </div>
+                               <div class="col-md-6">
+                                <label class="spllabel mb-3">My Primary Goal</label>
+                                <div class="btn-group btn-group-toggle primarygoaldisplay" data-toggle="buttons" id="primaryGoal">
+                                    <label class="btn btn-secondary active">
+                                        <input type="radio" name="goal" id="LoseWeight" autocomplete="off" value="loss" checked> Fat Loss
+                                    </label>
+                                    <label class="btn btn-secondary">
+                                        <input type="radio" name="goal" id="Gain" autocomplete="off" value="gain">Muscle Gain
+                                    </label>
+                                    <!-- <label class="btn btn-secondary">
+                                        <input type="radio" name="goal" id="Recomp" autocomplete="off" value="both"> Recomp
+                                    </label> -->
+                                </div> 
+                            </div>
+
+                    </div>
+                </div>
+            </div>
+            <!-- Button -->
+            <div class="form-group text-center">
+
+                <button id="submitButton" name="submitButton" class="btn btn-primary">Submit</button>
+
+            </div>
+
+        </form>
+
+    </div>
+</div>
+<br>
+<br>
+<br>
+<br>
+<div class="container p-0">
+    <div id="result" class="row no-gutters py-3 mb-2">
+       <div class="resultval resultval2 col-md-4" id="protein-value"></div>
+       <div class="resultval col-md-4" id="fat-value"></div>
+       <div class="resultval col-md-4" id="carbs-value"></div>
+       <div class="resultval  col-md-4" id="carbs-value-loss"></div>
+   </div>
+</div>
+</div>
+</div>
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+    var maleValue = $(".check-male");
+    var femaleValue = $(".check-female");
+    var currentGenderValue = '';
+    var currentAgeValue = 0;
+    var currentWeightValue = 0;
+    var generalisedHeight = 0;
+    var protinsRequiredPerDay = 0;
+    var fatsRequiredPerDay = 0;
+    var restingEnergyExpenditure = 0;
+    var finalGoal = '';
+    $(document).ready(function() {
+        $('[type=input]').on('keypress', function(e) {
+            keys = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.']
+            return keys.indexOf(event.key) > -1
+        });
+        $('#protein-value, #fat-value, #carbs-value, #carbs-value-loss, #result').hide();
+        $(maleValue).click(function() {
+            $(this).addClass('btn-dark');
+            $("#male").prop("checked", true);
+            currentGenderValue = 'Male';
+            if ($(femaleValue).hasClass('btn-dark')) {
+                $(femaleValue).removeClass('btn-dark');
+            }
+            $('#Prediabetic').val('0.6');
+            //change default value of 
+        });
+        $(femaleValue).click(function() {
+            $("#female").prop("checked", true);
+            $(this).addClass('btn-dark');
+            currentGenderValue = 'Female';
+            if ($(maleValue).hasClass('btn-dark')) {
+                $(maleValue).removeClass('btn-dark');
+            }
+            $('#Prediabetic').val('0.8');
+        });
+        $('#weight-in-kg').hide();
+        $('#showOnKg').hide();
+        $('#waightValue .btn').on('click', function() {
+            var currWeightsValz = $(this).next().context.control.id;
+            if (currWeightsValz == 'lbs') {
+                $('#weight-in-kg').hide();
+                $('#showOnKg').hide();
+                $('#weight-in-lbs').show();
+                $('#showOnLbs').show();
+            } else {
+                $('#weight-in-kg').show();
+                $('#showOnKg').show();
+                $('#weight-in-lbs').hide();
+                $('#showOnLbs').hide();
+            }
+        })
+            /*$('#exerciseLevel .btn').click(function(){
+                console.log('Current selected is : '+ $(this).context.control.id);
+            });*/
+        });
+    $('#submitButton').click(function(e) {
+        e.preventDefault();
+            //PROTIN
+            //FAT
+            //carbs
+            //calories
+
+            //All Variable Declearations
+            var aBoolianValue = !1,
+            completeForm = $('#protin-calculate-form'),
+            currentGender = completeForm.find('input[name="gender"]:checked').val(),
+                //currentAgesValue = completeForm.find("input#ageValue"),
+                //currentAgesValueInIntiger = parseInt(currentAgesValue.val()),
+                currentTypeOfLbOrKgUnit = completeForm.find('input[name="unitsValue"]:checked').val(),
+                InputValueOfTypeWaightLb = completeForm.find("input#weight-in-lbs"),
+                InputValueOfTypeWaightKg = completeForm.find("input#weight-in-kg"),
+                InputValueOfBodyFatPercentage = completeForm.find("input#fatValue"),
+                finalLeanMuscleCalc = 0,
+                //InputValueOfHeightInFoot = completeForm.find("input#height-in-ft"),
+                //InputValueOfHeightInInches = completeForm.find("input#height-in-in"),
+                //InputValueOfHeightInCm = completeForm.find("input#height-in-cm"),
+                CurrentWeightCalculateUnit = "",
+                currentDiabeticStatusCalc = 0,
+                currentCarbsforFatLoss = 0;
+                currentCarbsforMuscleGain = 0;
+                pureWaitValue = 0;
+                //currentHeightIfFoot = "",
+                //currentHeightIfInch = "",
+                //CurrentHeightCalculateUnit = 0;
+
+                console.log('currentGender',currentGender);
+
+             // Kg to lbs calculation
+             if (currentTypeOfLbOrKgUnit == 'kg') {
+                pureWaitValue = parseInt(InputValueOfTypeWaightKg.val()*2.2046);
+            }
+            else{
+                pureWaitValue = parseInt(InputValueOfTypeWaightLb.val());
+            }
+
+            var pureFatValue = InputValueOfBodyFatPercentage.val();
+            var lbsOfFat = pureWaitValue * (pureFatValue/100);
+            var leanMuscleCalculation = pureWaitValue - lbsOfFat ;
+
+//Further Lean Muscle Calculation Depebds on Exercise level
+var goalValue  = completeForm.find('input[name="goal"]:checked').val();
+//console.log('goal_value:',goalValue);
+//var  genderValue  = completeForm.find('input[name="gender"]:checked').val();
+protinValue = leanMuscleCalculation*completeForm.find('input[name="activity"]:checked').val();
+
+
+//Grams of Fat Calculation
+
+fatVal = leanMuscleCalculation*completeForm.find('input[name="currentstatus"]:checked').val();
+
+
+// Carbs for Fat Loss
+var fatPercentage = parseInt(InputValueOfBodyFatPercentage.val());
+
+
+pureWaitValue < 1 || isNaN(pureWaitValue) || pureWaitValue == ''?
+(InputValueOfTypeWaightLb.closest('div.customsaperator').addClass("error"), aBoolianValue = !0) :
+InputValueOfTypeWaightLb.closest('div.customsaperator').removeClass("error");
+
+pureFatValue < 1 || isNaN(pureFatValue) || pureFatValue == ''?
+(InputValueOfBodyFatPercentage.closest('div.customsaperator').addClass("error"), aBoolianValue = !0) :
+InputValueOfBodyFatPercentage.closest('div.customsaperator').removeClass("error");
+
+var errorPresent = $('.error');
+if(errorPresent.length){
+ $('html, body').animate({
+  scrollTop: $("#protin-calculate-form").offset().top
+}, 1000);
+}
+else{
+    if(currentGender=='male')
+    {
+        if(fatPercentage<=10){
+            currentCarbsforFatLoss = leanMuscleCalculation * 1.2;
+        }else if(fatPercentage<=20){
+            currentCarbsforFatLoss = leanMuscleCalculation * 0.8;
+        }else{
+            currentCarbsforFatLoss = leanMuscleCalculation * 0.5;
+        }
+
+        if(fatPercentage<=8){
+            currentCarbsforMuscleGain = leanMuscleCalculation * 1.5; 
+        }else if(fatPercentage<=10){
+            currentCarbsforMuscleGain = leanMuscleCalculation * 1.2; 
+        }else{
+            currentCarbsforMuscleGain = leanMuscleCalculation * 1; 
+        }
+        //var protinVal = Math.round(10 * currentCarbsforFatLoss) / 10;
+        //fatVal1 = Math.round(10 * currentCarbsforMuscleGain) / 10;
+        //carbsVal = Math.round(10 * currentDiabeticStatusCalc) / 10;
+    }
+    else{
+        console.log('You are looking for female values')
+        if(fatPercentage>=15 && fatPercentage<=19 ){
+            currentCarbsforFatLoss = leanMuscleCalculation * 1.2;
+        }
+        else if(fatPercentage>=20 && fatPercentage<=24){
+            currentCarbsforFatLoss = leanMuscleCalculation * 0.9;
+        }
+        else if(fatPercentage>=25){
+            currentCarbsforFatLoss = leanMuscleCalculation * 0.6;
+        }
+        var currentstatusId = $('input[name="currentstatus"]:checked').attr('id');
+        if(currentstatusId=='Diabetic'){
+           currentCarbsforFatLoss =  leanMuscleCalculation * 0.4
+        }
+        else if(currentstatusId=='Prediabetic'){
+            currentCarbsforFatLoss =  leanMuscleCalculation * 0.2
+        }
+        // this is need to check from client
+        if(fatPercentage<=8){
+            currentCarbsforMuscleGain = leanMuscleCalculation * 1.5; 
+        }else if(fatPercentage<=10){
+            currentCarbsforMuscleGain = leanMuscleCalculation * 1.2; 
+        }else{
+            currentCarbsforMuscleGain = leanMuscleCalculation * 1; 
+        }
+    }
+
+                //reeVal = Math.round(maleFemaleREECalories);
+                $("#protein-value").html('<span class="mainname">PROTEIN </span><span class="calcvalues">' + Math.round(protinValue) + '</span><span class="quantitycalc"> Grams per Day</span>'),
+                $("#fat-value").html('<span class="mainname">Fats </span><span class="calcvalues">' + Math.round(fatVal) + ' </span><span class="quantitycalc"> Grams per Day</span>'),
+                $("#carbs-value").html('<span class="mainname">Carbs for Muscle Gain </span><span class="calcvalues">' + Math.round(currentCarbsforMuscleGain) + ' </span><span class="quantitycalc"> Grams per Day</span>'),
+                $("#carbs-value-loss").html('<span class="mainname">Carbs for Fat Loss </span><span class="calcvalues">' + Math.round(currentCarbsforFatLoss) + ' </span><span class="quantitycalc"> Grams per Day</span>'),
+               // $("#calories-value").html(' <span class="mainname">Calories </span><span class="calcvalues">' + reeVal + ' </span><span class="quantitycalc"> Grams per Day</span>');
+               $("#result").show(  );
+               $('html, body').animate({
+                scrollTop: $("#result").offset().top
+            }, 1000);
+
+               $("#protein-value").show();
+               $("#fat-value").show();
+               if(fatPercentage<10){
+                if (goalValue=='gain'){
+                    $("#carbs-value").show();
+                }
+                else{
+                    $("#carbs-value").hide();
+                }
+               }
+               else{
+                $("#carbs-value").hide();
+               }
+               if(goalValue=='loss'){
+                    $("#carbs-value-loss").show();
+               } 
+               else{
+                    $("#carbs-value-loss").hide();
+               }
+               
+               //completeForm[0].reset();
+              //$("#calories-value").show(  );
+
+          }
+
+
+
+
+      });
+  </script>
+
+</body>
+
+</html>
